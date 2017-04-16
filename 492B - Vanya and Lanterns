@@ -1,0 +1,63 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define pii pair<int,int> 
+using namespace std;
+vector<int> v;
+int k,m,n;
+bool sw1,sw2;
+double d1,d2,d3;
+bool f(double r){
+	if(d1>r&&sw1)return false;
+	if(d3>r&&sw2)return false;
+	if(d2>2.0*r)return false;
+	return true;
+}
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+	cin>>n>>m;
+	for(int i=0;i<n;i++){
+		cin>>k;
+		v.push_back(k);
+	}
+	sw1=false;sw2=false;
+	sort(v.begin(),v.end());
+	if(!binary_search(v.begin(),v.end(),m)){
+		v.push_back(m);sw2=true;
+	}
+	if(!binary_search(v.begin(),v.end(),0)){
+		v.push_back(0);sw1=true;
+	}
+	if(v.size()==1){
+		cout<<"0.0000000000"<<endl;
+		return 0;
+	}
+	sort(v.begin(),v.end());
+	d1=0.0;
+	d3=0.0;
+	if(sw1)d1=v[1]-v[0];
+	if(sw2)d3=v[v.size()-1]-v[v.size()-2];
+	d2=0.0;
+	for(int i=1;i<v.size();i++){
+		if(d2<double(abs(v[i]-v[i-1]))){
+			d2=double(abs(v[i]-v[i-1]));
+		}
+	}
+	//cout<<d1<<" "<<d2<<" "<<d3<<endl;
+	double up=m;
+	double lo=0;
+	double mid,e;
+	for(int i=0;i<10000;i++){
+		mid=double(lo+up)/2.0;
+		//printf("%.9lf %0.9lf\n",lo,up);
+		//printf("%.9lf\n",mid);
+		if(f(mid)){
+			up=mid-0.0000000001;
+			e=mid;
+		}else{
+			lo=mid+0.0000000001;
+		}
+	}
+	printf("%.10lf\n",e);
+}
